@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Weather Data";
+}
+<h2>Weather data</h2>
+<p>Hello, the weather database is seeded with:</p>
+<p>
+    <li>
+        @ViewData["Path"]
+    </li>
+</p>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+        This chart shows all seeded weather data.
+    </p>
+</figure>
+
+
+<script>
+    $(document).ready(function () {
+        $.getJSON("/Data/GetJson", function (data) {
+            var Dates = []
+            var Values = []
+            for (var i = 0; i < data.length; i++) {
+                Dates.push(data[i].date);
+                Values.push(data[i].value);
+            }
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Temperature'
+                },
+                subtitle: {
+                    text: 'Source: @ViewData["Path"]'
+                },
+                xAxis: {
+                    categories: Dates
+                },
+                yAxis: {
+                    title: {
+                        text: 'Temperature (°C)'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: false
+                        },
+                        enableMouseTracking: true
+                    }
+                },
+                series: [{
+                    name: '@ViewData["Path"]',
+                    data: Values
+                }]
+            });
+        })
+    })
+
+</script>
