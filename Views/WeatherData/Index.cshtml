@@ -8,6 +8,10 @@
         @ViewData["Path"]
     </li>
 </p>
+<p>
+    Use SMHI api, type city: <input type="search" name="cityName"/>
+    <input type="submit" value="Set"/>
+</p>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -24,7 +28,7 @@
 
 <script>
     $(document).ready(function () {
-        $.getJSON("/Data/GetJson", function (data) {
+        $.getJSON("@ViewData["ChartJsonSource"]", function (data) {
             var Dates = []
             var Values = []
             for (var i = 0; i < data.length; i++) {

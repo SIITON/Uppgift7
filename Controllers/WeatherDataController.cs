@@ -20,6 +20,7 @@ namespace Uppgift7.Controllers
         private IEnumerable<WeatherModel> _weatherData;
         private IWeatherInputParser _inputParser;
         private readonly MvcWeatherContext _context;
+        private string _smhiCity;
 
         public WeatherDataController(IEnumerable<IWeatherData> weatherDataServices, IWeatherInputParser inputParser,
                 MvcWeatherContext context)
@@ -49,13 +50,30 @@ namespace Uppgift7.Controllers
                                .Select(d => new { date = d.Date, value = d.TemperatureC });
             return Json(query);
         }
+        [HttpGet("GetSmhiJson")]
+        public ActionResult<IEnumerable<WeatherModel>> GetSmhiJson()
+        {
+            var weather = from w in _context.Weather
+                          select w;
+            var query = weather.OrderBy(d => d.Timestamp)
+                               .Select(d => new { date = d.Date, value = 10 });
+            return Json(query);
+        }
 
         // GET: Data
-        public IActionResult Index()
+        public IActionResult Index(string cityName)
         {
             ViewData["Path"] = _inputParser.Path;
-            ViewData["Categories"] = _weatherData.Select(d => d.Date).ToList();
-            ViewData["Measurements"] = _weatherData.Select(d => d.TemperatureC).ToList();
+            if (String.IsNullOrEmpty(cityName))
+            {
+                ViewData["ChartJsonSource"] = "/Data/GetJson";
+            }
+            else
+            {
+                _smhiCity = cityName;
+                ViewData["ChartJsonSource"] = "/Data/GetSmhiJson";
+            }
+            
             return View();
         }
 
