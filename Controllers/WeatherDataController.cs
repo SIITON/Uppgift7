@@ -27,7 +27,6 @@ namespace Uppgift7.Controllers
         private IWeatherInputParser _inputParser;
         private readonly MvcWeatherContext _context;
         private string _smhiCity;
-        private IEnumerable<ChartData> _chartData;
 
         public WeatherDataController(IEnumerable<IWeatherData> weatherDataServices, IWeatherInputParser inputParser,
                 MvcWeatherContext context)
@@ -36,6 +35,7 @@ namespace Uppgift7.Controllers
             _inputParser = inputParser;
             _context = context;
             _weatherData = _inputParser.ParseWeatherInput();
+            _smhiCity = "Stockholm";
         }
 
         [HttpGet("Analyze")]
@@ -57,10 +57,15 @@ namespace Uppgift7.Controllers
                                .Select(d => new { date = d.Date, value = d.TemperatureC });
             return Json(query);
         }
-        [HttpGet("GetSmhiJson")]
-        public async Task<ActionResult<IEnumerable<WeatherModel>>> GetSmhiJson()
+        [HttpGet("SMHI/GetCity")]
+        public ActionResult<string> GetSMHIcity()
         {
-            //_smhiCity = "Stockholm";
+            return Json(_smhiCity);
+        }
+        [HttpGet("GetSmhiJson")]
+        public async Task<ActionResult<IEnumerable<WeatherModel>>> GetSmhiJson(string city)
+        {
+            _smhiCity = city;
             var lonlat = new Cities(_smhiCity).LonLat;
             var data = await GetSmhiData(lonlat[0], lonlat[1]);
 
@@ -85,8 +90,7 @@ namespace Uppgift7.Controllers
             var query = chartData.Select(d => new { date = d.Date, value = d.Value });
             return Json(query);
         }
-        [HttpGet("GetSmhiData")]
-        public async Task<SmhiModel> GetSmhiData(double longitude, double latitude)
+        private async Task<SmhiModel> GetSmhiData(double longitude, double latitude)
         {
             var lon = longitude.ToString(CultureInfo.InvariantCulture);
             var lat = latitude.ToString(CultureInfo.InvariantCulture);
@@ -97,22 +101,10 @@ namespace Uppgift7.Controllers
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<SmhiModel>(content);
         }
-
         // GET: Data
         public IActionResult Index(string cityName)
         {
             ViewData["Path"] = _inputParser.Path;
-            if (String.IsNullOrEmpty(cityName))
-            {
-                ViewData["ChartJsonSource"] = "/Data/GetJson";
-            }
-            else
-            {
-                _smhiCity = cityName;
-                ViewData["ChartJsonSource"] = "/Data/GetSmhiJson";
-            }
-            //_smhiCity = "Stockholm";
-            //ViewData["ChartJsonSource"] = "/Data/GetSmhiJson";
 
             return View();
         }

@@ -1,34 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Weather Data";
-}
-<h2>Weather data</h2>
-<p>Hello, the weather database is seeded with:</p>
-<li>
-    @ViewData["Path"] <input type="button" value="Show" onclick="plotChart('/Data/GetJson')" />
-</li>
-@*<form asp-controller="WeatherData">
-    <p>
-        Use SMHI api, type city: <input type="search" name="cityName" />
-        <input type="submit" value="Set" />
-    </p>
-</form>*@
-
-<p>
-    SMHI api: available cities:
-</p>
-<li>Stockholm <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Stockholm')" /></li>
-<li>Gothenburg <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Gothenburg')" /></li>
-<li>Visby <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Visby')" /></li>
-
-@*<script>
-    plotChart("Data/GetJson")
-    function defChart(apiSource) {
-        var jsonSource = apiSource
-        plotChart(jsonSource)
-    }
-</script>*@
-
-<script src="https://code.highcharts.com/highcharts.js"></script>
+﻿<script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
@@ -42,8 +12,8 @@
 
 
 <script>
-    function plotChart(source) {
-        $.getJSON(source, function (data) {
+    $(document).ready(function () {
+        $.getJSON("@ViewData["ChartJsonSource"]", function (data) {
             var Dates = []
             var Values = []
             for (var i = 0; i < data.length; i++) {
@@ -59,10 +29,10 @@
                     text: 'Temperature'
                 },
                 subtitle: {
-                    text: 'Source: ' + source
+                    text: 'Source: @ViewData["ChartJsonSource"]'
                 },
                 xAxis: {
-                    categories: Dates
+                    categories: Date
                 },
                 yAxis: {
                     title: {
@@ -71,7 +41,6 @@
                 },
                 plotOptions: {
                     line: {
-
                         dataLabels: {
                             enabled: false
                         },
@@ -84,7 +53,6 @@
                 }]
             });
         })
-        @*document.getElementById('tempchart').innerHTML = @ViewData["ChartJsonSource"];*@
-    }
+    })
 
 </script>

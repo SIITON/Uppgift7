@@ -4,29 +4,29 @@
 <h2>Weather data</h2>
 <p>Hello, the weather database is seeded with:</p>
 <li>
-    @ViewData["Path"] <input type="button" value="Show" onclick="plotChart('/Data/GetJson')" />
+    @ViewData["Path"]
 </li>
-@*<form asp-controller="WeatherData">
+<form asp-controller="WeatherData" asp-action="IndexSMHI">
     <p>
         Use SMHI api, type city: <input type="search" name="cityName" />
-        <input type="submit" value="Set" />
+        <input type="submit" value="Set" onclick="defChart()" />
     </p>
-</form>*@
+</form>
 
 <p>
-    SMHI api: available cities:
+    Available cities:
 </p>
-<li>Stockholm <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Stockholm')" /></li>
-<li>Gothenburg <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Gothenburg')" /></li>
-<li>Visby <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Visby')" /></li>
+<li>Stockholm</li>
+<li>Gothenburg</li>
+<li>Visby</li>
+<p>Right now set to @ViewData["ChartJsonSource"]</p>
 
-@*<script>
-    plotChart("Data/GetJson")
-    function defChart(apiSource) {
-        var jsonSource = apiSource
+<script>
+    function defChart() {
+        var jsonSource = "@ViewData["ChartJsonSource"]"
         plotChart(jsonSource)
     }
-</script>*@
+</script>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
