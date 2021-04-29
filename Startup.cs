@@ -13,6 +13,7 @@ using Uppgift7.Models.Features.InputParser;
 using Uppgift7.Models.Features.WeatherAnalytics;
 using Microsoft.EntityFrameworkCore;
 using Uppgift7.Data;
+using Uppgift7.Models.Features.SMHI;
 
 namespace Uppgift7
 {
@@ -31,6 +32,7 @@ namespace Uppgift7
             services.AddSingleton<IWeatherInputParser>(_ => new WeatherCsvParser("temperatures.csv"));
             services.AddTransient<IWeatherData, Warmest>();
             services.AddTransient<IWeatherData, Coldest>();
+            services.AddTransient<ISmhiApiServices, SmhiTemperatures>();
             services.AddControllersWithViews();
             services.AddDbContext<MvcWeatherContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MvcWeatherContext")));

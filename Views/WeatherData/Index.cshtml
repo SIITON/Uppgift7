@@ -6,19 +6,13 @@
 <li>
     @ViewData["Path"] <input type="button" value="Show" onclick="plotChart('/Data/GetJson')" />
 </li>
-@*<form asp-controller="WeatherData">
-    <p>
-        Use SMHI api, type city: <input type="search" name="cityName" />
-        <input type="submit" value="Set" />
-    </p>
-</form>*@
 
 <p>
     SMHI api: available cities:
 </p>
-<li>Stockholm <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Stockholm')" /></li>
-<li>Gothenburg <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Gothenburg')" /></li>
-<li>Visby <input type="button" value="Plot" onclick="plotChart('/Data/GetSmhiJson?city=Visby')" /></li>
+<li>Stockholm <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Stockholm')" /></li>
+<li>Gothenburg <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Gothenburg')" /></li>
+<li>Visby <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Visby')" /></li>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
