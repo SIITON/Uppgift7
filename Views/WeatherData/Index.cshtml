@@ -2,7 +2,7 @@
     ViewData["Title"] = "Weather Data";
 }
 <h2>Weather data</h2>
-<p>Hello, the weather database is seeded with:</p>
+<p>The database is seeded with:</p>
 <li>
     @ViewData["Path"] <input type="button" value="Show" onclick="plotChart('/Data/GetJson')" />
 </li>
@@ -70,7 +70,6 @@
                 }]
             });
         })
-        @*document.getElementById('tempchart').innerHTML = @ViewData["ChartJsonSource"];*@
     }
 
 </script>

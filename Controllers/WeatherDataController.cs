@@ -72,7 +72,7 @@ namespace Uppgift7.Controllers
 
             SmhiModel data = await _smhiApiServices.GetPoint(lonlat[0], lonlat[1]);
             var chartData = _smhiApiServices.ConvertToChartJson(data);
-            var query = chartData.Select(d => new { date = d.Date, value = d.Value });
+            var query = chartData.Select(d => new { date = d.Date.ToString(), value = d.Value });
             return Json(query);
         }
         // GET: Data
