@@ -38,10 +38,11 @@ namespace Uppgift7.Controllers
         {
             var weather = from w in _context.Weather
                           select w;
-            
-            weather = weather.Where(t => t.Date.Hour >= lower && t.Date.Hour < upper)
-                             .OrderBy(w => w.Timestamp);
-
+            if (lower != 0 && upper != 0)
+            {
+                weather = weather.Where(t => t.Date.Hour >= lower && t.Date.Hour < upper);
+            }
+            weather = weather.OrderBy(w => w.Timestamp);
             foreach (var service in _weatherAnalyticServices)
             {
                 weather = service.QueryData(weather);

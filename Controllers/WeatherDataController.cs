@@ -39,7 +39,7 @@ namespace Uppgift7.Controllers
             _smhiApiServices = smhiApiServices;
         }
 
-        // Depreciated get
+        // Depreciated endpoint
         [HttpGet("Analyze")]
         public ActionResult<IEnumerable<WeatherModel>> GetStuff()
         {
