@@ -70,7 +70,7 @@ namespace Uppgift7.Controllers
             _smhiCity = city;
             var lonlat = new Cities(_smhiCity).LonLat;
 
-            SmhiModel data = await _smhiApiServices.GetPoint(lonlat[0], lonlat[1]);
+            SmhiModel data = await _smhiApiServices.GetWeatherByPoint(lonlat[0], lonlat[1]);
             var chartData = _smhiApiServices.ConvertToChartJson(data);
             var query = chartData.Select(d => new { date = d.Date.ToString(), value = d.Value });
             return Json(query);

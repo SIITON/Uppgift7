@@ -38,7 +38,7 @@ namespace Uppgift7.Controllers
         {
             var weather = from w in _context.Weather
                           select w;
-            if (lower != 0 && upper != 0)
+            if (!(lower == 0 && upper == 0))
             {
                 weather = weather.Where(t => t.Date.Hour >= lower && t.Date.Hour < upper);
             }

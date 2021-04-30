@@ -32,7 +32,8 @@ namespace Uppgift7
             services.AddSingleton<IWeatherInputParser>(_ => new WeatherCsvParser("temperatures.csv"));
             services.AddTransient<IWeatherData, Warmest>();
             services.AddTransient<IWeatherData, Coldest>();
-            services.AddTransient<ISmhiApiServices, SmhiTemperatures>();
+            services.AddHttpClient<ISmhiApiServices, SmhiTemperatures>();
+            //services.AddHttpClient<ISmhiApiServices, SmhiTemperatures>(config => {config.DefaultRequestHeaders.Add(yadakey)});
             services.AddControllersWithViews();
             services.AddDbContext<MvcWeatherContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MvcWeatherContext")));

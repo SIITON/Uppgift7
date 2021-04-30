@@ -4,15 +4,15 @@
 <h2>Weather data</h2>
 <p>The database is seeded with:</p>
 <li>
-    @ViewData["Path"] <input type="button" value="Show" onclick="plotChart('/Data/GetJson')" />
+    @ViewData["Path"] <input type="button" value="Show" onclick="plotChart('/Data/GetJson', '@ViewData["Path"]')" />
 </li>
 
 <p>
     SMHI api: available cities:
 </p>
-<li>Stockholm  <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Stockholm')" /></li>
-<li>Gothenburg <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Gothenburg')" /></li>
-<li>Visby      <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Visby')" /></li>
+<li>Stockholm  <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Stockholm', 'Stockholm')" /></li>
+<li>Gothenburg <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Gothenburg', 'Gothenburg')" /></li>
+<li>Visby      <input type="button" value="Plot" onclick="plotChart('/Data/SMHI/GetChart?city=Visby', 'Visby')" /></li>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -28,7 +28,7 @@
 
 
 <script>
-    function plotChart(source) {
+    function plotChart(source, city) {
         $.getJSON(source, function (data) {
             var Dates = []
             var Values = []
@@ -65,7 +65,7 @@
                     }
                 },
                 series: [{
-                    name: '@ViewData["Path"]',
+                    name: city,
                     data: Values
                 }]
             });

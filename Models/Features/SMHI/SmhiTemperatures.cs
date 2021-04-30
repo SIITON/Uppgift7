@@ -10,6 +10,11 @@ namespace Uppgift7.Models.Features.SMHI
 {
     public class SmhiTemperatures : ISmhiApiServices
     {
+        private HttpClient _httpClient;
+        public SmhiTemperatures(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
         public IEnumerable<ChartData> ConvertToChartJson(SmhiModel data)
         {
             var values = (from t in data.TimeSeries
@@ -31,14 +36,14 @@ namespace Uppgift7.Models.Features.SMHI
             }
             return chartData;
         }
-        public async Task<SmhiModel> GetPoint(double longitude, double latitude)
+        public async Task<SmhiModel> GetWeatherByPoint(double longitude, double latitude)
         {
             var lon = longitude.ToString(CultureInfo.InvariantCulture);
             var lat = latitude.ToString(CultureInfo.InvariantCulture);
 
             var url = $"https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/{lon}/lat/{lat}/data.json";
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(url);
+            //var httpClient = new HttpClient();
+            var response = await _httpClient.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<SmhiModel>(content);
         }
